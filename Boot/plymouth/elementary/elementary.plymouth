@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Elementary mininal theme
+Description=minimalistic option
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/elementary
+ScriptFile=/usr/share/plymouth/themes/elementary/elementary.script

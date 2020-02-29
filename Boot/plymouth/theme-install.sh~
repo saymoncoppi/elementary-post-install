@@ -1,0 +1,276 @@
+#!/usr/bin/env bash
+#
+# Elementary OS minimalist theme for Plymouth
+#
+# A simple wrapper script to install
+#
+# https://github.com/saymoncoppi/slide
+#
+# Author:     Saymon Coppi <saymoncoppi@gmail.com>
+# Maintainer: Saymon Coppi <saymoncoppi@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# COMMON INSTALLER OPTIONS
+#=======================================================
+INSTALLER_NAME="eos_"
+PLYMOUTH_FOLDER="/usr/share/plymouth/themes/elementary"
+ALTERNATIVE_FILE="/etc/alternatives/default.plymouth"
+
+
+# ISSUE : Sometimes fail when the first time, maybe something related to sudo pass.IDK
+ROOT_UID=0
+# check command avalibility
+function has_command() {
+    command -v $1 > /dev/null
+}
+if [ "$UID" -eq "$ROOT_UID" ]; then
+
+
+
+# PREPARING THE INSTALLER FOLDER
+#=======================================================
+if [ -d ${PLYMOUTH_FOLDER}_bkp ]; then
+    echo "plymouth found!"
+    rm -rf ${PLYMOUTH_FOLDER}_bkp 
+    mv ${PLYMOUTH_FOLDER} ${PLYMOUTH_FOLDER}_bkp
+else
+    mv ${PLYMOUTH_FOLDER} ${PLYMOUTH_FOLDER}_bkp
+fi
+
+# PREPARING THE INSTALLER FOLDER
+#=======================================================
+FOLDER_SUFFIX=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 5)
+TMP_FOLDER="/tmp/${INSTALLER_NAME}${FOLDER_SUFFIX}"
+mkdir -p "$TMP_FOLDER"
+
+LOGO_FILE="$TMP_FOLDER/logo.png"
+THEME_FILE="$TMP_FOLDER/elementary.plymouth"
+SCRIPT_FILE="$TMP_FOLDER/elementary.script"
+
+
+#WRITING ELEMENTARY BRAND (logo.png)
+#=======================================================
+echo '
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAAXNSR0IB2cksfwAAAAlwSFlzAAAmcwAAJnMB82x1CgAAAjFQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+I4f6wAAALt0Uk5TAAsfNUhSBCpzrd3y/P8BTMP09ciVd2tteZnJ9009sf3gikkPEEqL4j4Z+/68Rwe9JMbhGFOps6V7OQh6O7ACJ57p66Ogu+gDIO6DCnHtiB34ZIWBDJ/CQ89mx662DsCJ2B5nm1T2Fd6oJtu+Lin51RvXv0C4cnhZjMETBZHMW8VRXzQJ0nUhmvAcRWyqWjK5yqGWMF0SohoGh/Os5DGvj0amfTy6aoIt7LIv3FZ2neXE50s4y9kjaFWkmHNds7YAAAQOSURBVHicrVb7X9tUFE/TlkKbU5o2rYOW3tp2tE3WshadPFr2oitQwDJAHZvDuRWnTvCxIW7u6WQvN2a3CSKbczqcOhWnzsdf581NkzSh4Px8PL/knJPved2ce04o6n8gA200mc0mI214AnCNpbbOamMAE2Oz1tVaataF2+sdLIDTxbk9T21oaPQCsA6ffW14kx9B4OlgSJbDG5sjgPzRNUxiHC9siie0ykSwReC5WDX85iRKuYlze+szzc9uea6tvUOUQp0plNy8Op10isnQIte1ddv2HY6d3dldfGM0J2p6/EwkrU8r3Qt9eZHJ9Q/YBp/vwi5izQV2iLw07IbetC6fFAwTHyOjzAs9svZFJ9skxe+DiCarWJLpI/jWl9Bgh6rfUxiTDsG+m0lWVG7nUIbkk9gL+16ucDSyv1BOJe9HnFpGE58i9XaMwysHNKm+CgfLHJ3io0oAv+AmzKEiCmpra0eNMtsp+OUQ9WgTOf+J1+CwFk+97n1DZsNvIp/E1TggTpgNgI7oDN6anFJ4EzikTrSwAXIUb78D7+o/z3vCUYVPBFgLYY7BOHlOo8L7OjwO2q8KM1BLnnUgVfoBTB3X4U9ky04JDUGd+DBYnaTkcAE+1Ac4VNyXU4TcSbCKd5C2uYicBjilw+dOM2dUyQdgEz+XkeGIfBaYczqDU8L+jxSh57x3jDFS4mlJX+1jYGe1+NldA+2KYB+FC9OkWjN4iKYNLl7S4MONwpB6zJe9NvoKmInBFaLp10Xo+AQaVDxtLXgoDzGQU7oKzLUKfGJGmFMLMFyHT2soN0nJyJSI7gbATRWfHxXmbinSic9gap6iOFI0bbtOIi/0QreCGNkCpyfUaJ8Li+K9cJFjNViL0iD6Apa2lhG3z8OdsOr/SzR5BjsNOcmHU1rjrg2+ktzfW0Qz6og83i3wVylSLWkNqhaapcB7wfs17vZz3zA77qvzbP4owy6TBhkvN5+FTUmvv30AkWvR75xM9ns1nfofYOBhFylSbm98gUzS2x8RLE4Ce39BwYd/4uHnjRIfh5Vynj7UIpZ9K35wEU/5pbgCn535BWBuXhJCWfmKikOAO9ZwclJEFwH4lrZHNyy/Phz8jQf4/abc3251CFBRHgkY7R279/iRC2Gu8GD7RV605x7LGDqgjhnKXkKwlPnjiJi74c+/UgVsLhSth89OKD7zGVSquPCxpPB3l2J+oN7TOb3nbmsFwL6sGZV4GEeE4bVXE2Uf1g3jinFfjfLLq8Y9XiiR8kJZTXSmykIhKyvgDq2Gh9yBaisLU6wkLsUFrTIRzwp8qepSxGlFydo1KWFCpvHAOmtXNPGt4MVeHMOL3ePmXE682FfWWewi/cdfB4nwz0nQbA4+2c/Jv9I/RaqxmKfr9ooAAAAASUVORK5CYII=
+' | base64 -d > $LOGO_FILE
+
+
+
+#WRITING PLYMOUTH THEME (elementary.plymouth)
+#=======================================================
+printf "[Plymouth Theme]
+Name=Elementary mininal theme
+Description=minimalistic option
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/elementary
+ScriptFile=/usr/share/plymouth/themes/elementary/elementary.script" > $THEME_FILE
+
+
+#WRITING PLYMOUTH SCRIPT (elementary.script)
+#=======================================================
+printf "## elementary plymouth minimal theme
+
+# Set Background Color
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.x = Window.GetX() + Window.GetWidth() / 2 - logo.image.GetWidth() / 2;
+logo.y = Window.GetY() + Window.GetHeight() / 2 - logo.image.GetHeight() / 2;
+logo.sprite.SetPosition(logo.x, logo.y, 10000);
+
+boot_opacity = 0.3;
+boot_flag = 1;
+fun boot_callback() 
+{
+    if (boot_opacity >= 1){
+        boot_flag = 0;
+    }
+    if (boot_opacity < 0.3){
+        boot_flag = 1;
+    }
+    if (boot_flag == 1){
+        boot_opacity += 0.01;
+    }
+    if (boot_flag == 0){
+        boot_opacity -= 0.01;
+    }
+    logo.sprite.SetOpacity(boot_opacity);
+}
+
+reboot_opacity = 1.0;
+fun reboot_callback() 
+{
+    if (reboot_opacity > 0.2) {
+        reboot_opacity -= 0.005;
+        logo.sprite.SetOpacity(reboot_opacity);
+    }
+}
+
+if (Plymouth.GetMode() == "boot")
+{
+    Plymouth.SetRefreshFunction(boot_callback);
+} 
+else 
+{
+    Plymouth.SetRefreshFunction(reboot_callback);
+}
+
+fun quit_callback() 
+{
+    logo.sprite.SetOpacity(0);
+}
+
+Plymouth.SetQuitFunction(quit_callback);
+
+#----------------------------------------- Dialogue --------------------------------
+
+status = "normal";
+
+fun dialog_setup()
+  {
+    local.box;
+    local.lock;
+    local.entry;
+    
+    box.image = Image("box.png");
+    lock.image = Image("lock.png");
+    entry.image = Image("entry.png");
+    
+    box.sprite = Sprite(box.image);
+    box.x = Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth ()/2;
+    box.y = Window.GetY() + Window.GetHeight() / 2 - box.image.GetHeight()/2;
+    box.z = 10000;
+    box.sprite.SetPosition(box.x, box.y, box.z);
+    
+    lock.sprite = Sprite(lock.image);
+    lock.x = box.x + box.image.GetWidth()/2 - (lock.image.GetWidth() + entry.image.GetWidth()) / 2;
+    lock.y = box.y + box.image.GetHeight()/2 - lock.image.GetHeight()/2;
+    lock.z = box.z + 1;
+    lock.sprite.SetPosition(lock.x, lock.y, lock.z);
+    
+    entry.sprite = Sprite(entry.image);
+    entry.x = lock.x + lock.image.GetWidth();
+    entry.y = box.y + box.image.GetHeight()/2 - entry.image.GetHeight()/2;
+    entry.z = box.z + 1;
+    entry.sprite.SetPosition(entry.x, entry.y, entry.z);
+    
+    global.dialog.box = box;
+    global.dialog.lock = lock;
+    global.dialog.entry = entry;
+    global.dialog.bullet_image = Image("bullet.png");
+    dialog_opacity (1);
+  }
+    
+fun dialog_opacity(opacity)
+  {
+    dialog.box.sprite.SetOpacity (opacity);
+    dialog.lock.sprite.SetOpacity (opacity);
+    dialog.entry.sprite.SetOpacity (opacity);
+    for (index = 0; dialog.bullet[index]; index++)
+      {
+        dialog.bullet[index].sprite.SetOpacity(opacity);
+      }
+  }
+
+fun display_normal_callback ()
+  {
+    global.status = "normal";
+    if (global.dialog)
+      dialog_opacity (0);
+  }
+
+fun display_password_callback (prompt, bullets)
+  {
+    global.status = "password";
+    if (!global.dialog)
+	dialog_setup();
+    else
+	dialog_opacity(1);
+    for (index = 0; dialog.bullet[index] || index < bullets; index++)
+      {
+        if (!dialog.bullet[index])
+          {
+            dialog.bullet[index].sprite = Sprite(dialog.bullet_image);
+            dialog.bullet[index].x = dialog.entry.x + index * dialog.bullet_image.GetWidth();
+            dialog.bullet[index].y = dialog.entry.y + dialog.entry.image.GetHeight() / 2 - dialog.bullet_image.GetHeight() / 2;
+            dialog.bullet[index].z = dialog.entry.z + 1;
+            dialog.bullet[index].sprite.SetPosition(dialog.bullet[index].x, dialog.bullet[index].y, dialog.bullet[index].z);
+          }
+        if (index < bullets)
+          dialog.bullet[index].sprite.SetOpacity(1);
+        else
+          dialog.bullet[index].sprite.SetOpacity(0);
+      }
+  }
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+
+#----------------------------------------- Message --------------------------------
+
+message_sprite = Sprite();
+message_sprite.SetPosition(Window.GetX() + 10, Window.GetY() + 10, 10000);
+
+fun message_callback (text)
+{
+  my_image = Image.Text(text, 1, 1, 1);
+  message_sprite.SetImage(my_image);
+}
+
+Plymouth.SetMessageFunction(message_callback);" > $SCRIPT_FILE
+
+
+#MOVING ASSETS
+#=======================================================
+mv $TMP_FOLDER $PLYMOUTH_FOLDER
+if [ -f "/usr/share/plymouth/themes/default.plymouth" ]; then
+    rm -rf "/usr/share/plymouth/themes/default.plymouth"
+fi
+
+ln -s "/usr/share/plymouth/themes/elementary/elementary.plymouth" "/etc/alternatives/default.plymouth"
+
+if [ -f "/etc/alternatives/default.plymouth" ]; then
+    rm -rf "/etc/alternatives/default.plymouth"
+fi
+ln -s "/etc/alternatives/default.plymouth" "/usr/share/plymouth/themes/default.plymouth"
+
+
+#UPDATING /ETC/ALTERNATIVES
+#=======================================================
+update-alternatives --install "/usr/share/plymouth/themes/default.plymouth" "default.plymouth" "/usr/share/plymouth/themes/elementary/elementary.plymouth" "100"
+update-initramfs -u
+
+# TESTING 
+#=======================================================
+DO_TEST="YES"
+if [ $DO_TEST == "YES" ]; then
+    plymouthd
+    plymouth --show-splash
+    sleep ${1:-2}
+    plymouth quit
+fi
+
+
+else
+# Asking for sudo password
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@"
+fi
+exit

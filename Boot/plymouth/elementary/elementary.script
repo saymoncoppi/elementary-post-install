@@ -1,0 +1,55 @@
+# elementary plymouth minimal theme
+
+# Set Background Color
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.x = Window.GetX() + Window.GetWidth() / 2 - logo.image.GetWidth() / 2;
+logo.y = Window.GetY() + Window.GetHeight() / 2 - logo.image.GetHeight() / 2;
+logo.sprite.SetPosition(logo.x, logo.y, 10000);
+
+boot_opacity = 0.3;
+boot_flag = 1;
+fun boot_callback() 
+{
+    if (boot_opacity >= 1){
+        boot_flag = 0;
+    }
+    if (boot_opacity < 0.3){
+        boot_flag = 1;
+    }
+    if (boot_flag == 1){
+        boot_opacity += 0.01;
+    }
+    if (boot_flag == 0){
+        boot_opacity -= 0.01;
+    }
+    logo.sprite.SetOpacity(boot_opacity);
+}
+
+reboot_opacity = 1.0;
+fun reboot_callback() 
+{
+    if (reboot_opacity > 0.2) {
+        reboot_opacity -= 0.005;
+        logo.sprite.SetOpacity(reboot_opacity);
+    }
+}
+
+if (Plymouth.GetMode() == "boot")
+{
+    Plymouth.SetRefreshFunction(boot_callback);
+} 
+else 
+{
+    Plymouth.SetRefreshFunction(reboot_callback);
+}
+
+fun quit_callback() 
+{
+    logo.sprite.SetOpacity(0);
+}
+
+Plymouth.SetQuitFunction(quit_callback);
