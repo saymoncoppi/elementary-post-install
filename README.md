@@ -5,7 +5,9 @@ A Simple, Light and Incredible Desktop for Elementary
 ## It's a tiny repo for some Elementary tweaks:
 **Booting**
 * Grub easyway (singleOS, multiOS, fastboot, backgrounds and theme support) 
+* Grub cleanup folder
 * Plymouth minimalist theme
+* Fix timeout from /etc/systemd/system.conf
 * Flicker free booting improvments
 
 **Hybrid Graphics**
@@ -18,3 +20,4 @@ A Simple, Light and Incredible Desktop for Elementary
 * Allow compression
 * No Docs
 * Autoclean post invoke
+* APT Additions (geolocation, apt-spy and fast-apt)
