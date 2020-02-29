@@ -22,7 +22,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Text styles 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 clear; set -e
+printf "${bold}Elementary OS minimalist theme for Plymouth${normal}\n"
+echo "--------------------------------------------------"
 
 # CHECKING CONNECTION
 #=======================================================
@@ -34,9 +40,9 @@ function check_connection {
     wget --quiet --tries=1 --spider "${GIT_URL}"
     if [ $? -eq 0 ]; then
         # Check Page content
-        PAGE_TEST=$(wget --server-response ${GIT_URL} ip-current 2>&1 | grep -c 'HTTP/1.1 200 OK')
+        PAGE_TEST=$(wget --spider --server-response ${GIT_URL} ip-current 2>&1 | grep -c 'HTTP/1.1 200 OK')
         if [ $PAGE_TEST = 1 ]; then
-            echo "$GIT_URL is UP! Great, let's go..."
+            echo "Installing..."
         else
             echo "Ops! $GIT_URL is DOWN, sorry..."
             exit
@@ -81,7 +87,7 @@ ls -1 | grep -E -v 'details|text|tribar' | xargs rm -rf
 efolder="${THEME_FOLDER}/elementary"
 mkdir "$efolder"
 cd "$efolder"
-THEME_URL="https://github.com/saymoncoppi/slide/blob/master/Boot/plymouth/elementary/"
+THEME_URL="https://raw.githubusercontent.com/saymoncoppi/slide/master/Boot/plymouth/elementary/"
 for THEME_FILE in logo.png elementary.plymouth elementary.script
 	do
 		wget -q "${THEME_URL}${THEME_FILE}"
@@ -113,9 +119,8 @@ update-initramfs -u
 #=======================================================
 DO_TEST="YES"
 if [ $DO_TEST == "YES" ]; then
-    plymouthd; plymouth --show-splash
-    sleep ${1:-2}
-    plymouth quit
+DURATION=5
+plymouthd; plymouth --show-splash ; for ((I=0; I<$DURATION; I++)); do plymouth --update=test$I ; sleep 1; done; plymouth quit
 fi
 
 else
@@ -129,4 +134,6 @@ fi
 
 # SUCESS!
 #=======================================================
+rm -rf ${THEME_FOLDER_BKP}
+echo "Done! Erasing backup files" 
 exit
