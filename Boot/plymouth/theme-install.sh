@@ -34,11 +34,11 @@ function check_connection {
     wget --quiet --tries=1 --spider "${GIT_URL}"
     if [ $? -eq 0 ]; then
         # Check Page content
-        LINK_TEST=$(HEAD $GIT_URL | grep '200\ OK' | wc -l)
-        if [ $LINK_TEST = 1 ]; then
-            echo "$GIT_URL is ok! Great, let's go..."
+        PAGE_TEST=$(wget --server-response ${GIT_URL} ip-current 2>&1 | grep -c 'HTTP/1.1 200 OK')
+        if [ $PAGE_TEST = 1 ]; then
+            echo "$GIT_URL is UP! Great, let's go..."
         else
-            echo "Ops! $GIT_URL is not available, sorry..."
+            echo "Ops! $GIT_URL is DOWN, sorry..."
             exit
         fi
     else
@@ -47,7 +47,7 @@ function check_connection {
     fi
 }
 
-
+check_connection
 
 # RUN AS ROOT
 #=======================================================
@@ -72,33 +72,34 @@ else
     cp -R ${THEME_FOLDER} ${THEME_FOLDER_BKP}
 fi
 
-cd $THEME_FOLDER
 
+
+cd $THEME_FOLDER
 # keeping folders (details text tribar)
 ls -1 | grep -E -v 'details|text|tribar' | xargs rm -rf
 
-THEME_URL="${GIT_URL}/boot/plymouth"
+efolder="${THEME_FOLDER}/elementary"
+mkdir "$efolder"
+cd "$efolder"
+THEME_URL="https://github.com/saymoncoppi/slide/blob/master/Boot/plymouth/elementary/"
 for THEME_FILE in logo.png elementary.plymouth elementary.script
 	do
-		sh -c 'wget -q --show-progress ${THEME_URL}/${THEME_FILE}'
+		wget -q "${THEME_URL}${THEME_FILE}"
 	done
-
 
 
 #MOVING ASSETS
 #=======================================================
-mv $TMP_FOLDER $PLYMOUTH_FOLDER
 if [ -f "/usr/share/plymouth/themes/default.plymouth" ]; then
     rm -rf "/usr/share/plymouth/themes/default.plymouth"
 fi
 
-ln -s "/usr/share/plymouth/themes/elementary/elementary.plymouth" "/etc/alternatives/default.plymouth"
-
 if [ -f "/etc/alternatives/default.plymouth" ]; then
     rm -rf "/etc/alternatives/default.plymouth"
 fi
-ln -s "/etc/alternatives/default.plymouth" "/usr/share/plymouth/themes/default.plymouth"
 
+ln -s "/usr/share/plymouth/themes/elementary/elementary.plymouth" "/etc/alternatives/default.plymouth"
+ln -s "/etc/alternatives/default.plymouth" "/usr/share/plymouth/themes/default.plymouth"
 
 
 #UPDATING /ETC/ALTERNATIVES
