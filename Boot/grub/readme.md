@@ -28,3 +28,6 @@ http://ubuntuhandbook.org/index.php/2014/06/ubuntu-1404-hide-grub-menu/
 https://ubuntu-mate.community/t/how-to-show-grub-menu-in-ubuntu-with-only-a-single-os-installed/821
 https://askubuntu.com/questions/599208/how-to-list-grubs-menuentries-in-command-line
 
+## Brand blinking on boot
+https://forum.manjaro.org/t/dells-logo-flashing-during-startup/80054/6
+
