@@ -34,3 +34,9 @@ https://forum.manjaro.org/t/dells-logo-flashing-during-startup/80054/6
 ## About kernel parameters
 https://www.kernel.org/doc/html/v5.3/admin-guide/kernel-parameters.html
 
+## GRUB_DISTRIBUTOR
+https://robbinespu.github.io/eng/2018/09/04/Disable_plymouth_and_boot_faster.html
+
+## Silent boot
+https://wiki.archlinux.org/index.php/Silent_boot
+
