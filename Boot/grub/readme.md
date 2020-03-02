@@ -31,3 +31,6 @@ https://askubuntu.com/questions/599208/how-to-list-grubs-menuentries-in-command-
 ## Brand blinking on boot
 https://forum.manjaro.org/t/dells-logo-flashing-during-startup/80054/6
 
+## About kernel parameters
+https://www.kernel.org/doc/html/v5.3/admin-guide/kernel-parameters.html
+
