@@ -40,3 +40,5 @@ https://robbinespu.github.io/eng/2018/09/04/Disable_plymouth_and_boot_faster.htm
 ## Silent boot
 https://wiki.archlinux.org/index.php/Silent_boot
 
+## Convert SGV to PNG
+https://stackoverflow.com/questions/9853325/how-to-convert-a-svg-to-a-png-with-imagemagick
