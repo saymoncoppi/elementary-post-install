@@ -41,4 +41,8 @@ https://robbinespu.github.io/eng/2018/09/04/Disable_plymouth_and_boot_faster.htm
 https://wiki.archlinux.org/index.php/Silent_boot
 
 ## Convert SGV to PNG
-https://stackoverflow.com/questions/9853325/how-to-convert-a-svg-to-a-png-with-imagemagick
+https://stackoverflow.com/questions/9853325/how-to-convert-a-svg-to-a-png-with-imagemagick \
+https://unix.stackexchange.com/questions/246263/modify-an-svg-file-based-on-information-in-a-csv-file
+
+## Convert fonts TTF to PFF2
+https://stackoverflow.com/questions/9216849/how-do-you-convert-ttf-font-to-pff2
