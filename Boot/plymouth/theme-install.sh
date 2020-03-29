@@ -3,7 +3,7 @@
 # theme-install.sh
 #=======================================================
 # About: A simple wrapper script to install Elementary OS minimalist theme for Plymouth
-# Source : https://github.com/saymoncoppi/slide
+# Source : https://github.com/saymoncoppi/elementary-post-install
 # Author:     Saymon Coppi <saymoncoppi@gmail.com>
 # Maintainer: Saymon Coppi <saymoncoppi@gmail.com>
 # Created: 29/02/2020
@@ -33,7 +33,7 @@ echo "--------------------------------------------------"
 # CHECKING CONNECTION
 #=======================================================
 # Base URLs
-GIT_URL="https://github.com/saymoncoppi/slide"
+GIT_URL="https://github.com/saymoncoppi/elementary-post-install"
 
 # Check Internet connection
 function check_connection {
@@ -87,7 +87,7 @@ ls -1 | grep -E -v 'details|text|tribar' | xargs rm -rf
 efolder="${THEME_FOLDER}/elementary"
 mkdir "$efolder"
 cd "$efolder"
-THEME_URL="https://raw.githubusercontent.com/saymoncoppi/slide/master/Boot/plymouth/elementary/"
+THEME_URL="https://raw.githubusercontent.com/saymoncoppi/elementary-post-install/master/Boot/plymouth/elementary/"
 for THEME_FILE in logo.png elementary.plymouth elementary.script
 	do
 		wget -q "${THEME_URL}${THEME_FILE}"
