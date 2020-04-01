@@ -1,10 +1,10 @@
 # slide
 A Simple, Light and Incredible Desktop for Elementary
-![linuxslide logo](https://raw.githubusercontent.com/saymoncoppi/linuxslide/master/img/linuxslide.png "linuxslide logo")
+![elementary-community](https://raw.githubusercontent.com/saymoncoppi/elementary-post-install/master/elementary-community-black.png "elementary-community")
 
 ## It's a tiny repo for some Elementary tweaks:
 **Booting**
-* Grub easyway (singleOS, multiOS, fastboot, backgrounds and theme support) 
+* Grub easyway 
 * Grub cleanup folder
 * Plymouth minimalist theme
 * Fix timeout from /etc/systemd/system.conf
@@ -21,3 +21,6 @@ A Simple, Light and Incredible Desktop for Elementary
 * No Docs
 * Autoclean post invoke
 * APT Additions (geolocation, apt-spy and fast-apt)
+
+**Other settings coming from:**
+https://github.com/saymoncoppi/eosxp/blob/master/referencias.md
