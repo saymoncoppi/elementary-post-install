@@ -1,4 +1,4 @@
-# slide
+# elementary-post-install
 A Simple, Light and Incredible Desktop for Elementary
 ![elementary-community](https://raw.githubusercontent.com/saymoncoppi/elementary-post-install/master/elementary-community-black.png "elementary-community")
 
